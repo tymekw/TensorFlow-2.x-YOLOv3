@@ -11,7 +11,6 @@ Code was tested with following specs:
 - Code was tested on Ubuntu and Windows 10 (TensorRT not supported officially)
 ## GPU compatibility on Windows 10
 - check if your GPU is compatible
-  https://developer.nvidia.com/cuda-gpus
 - install GPU driver
   https://www.nvidia.com/download/index.aspx?lang=en-us
 - download and install CUDA 10.1
