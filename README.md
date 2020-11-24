@@ -9,6 +9,19 @@ Code was tested with following specs:
 - TensorRT-6.0.1.5
 - Tensorflow-GPU 2.3.1
 - Code was tested on Ubuntu and Windows 10 (TensorRT not supported officially)
+## GPU compatibility on Windows 10
+- check if your GPU is compatible
+  https://developer.nvidia.com/cuda-gpus
+- install GPU driver
+  https://www.nvidia.com/download/index.aspx?lang=en-us
+- download and install CUDA 10.1
+  https://developer.nvidia.com/cuda-10.1-download-archive-base
+- download and unzip cuDNN v7.6.5, may require creating free account
+  https://developer.nvidia.com/rdp/cudnn-archive
+- move from unziped cuda (cuDNN) folder to installed NVIDIA GPU Computing Toolkit/CUDA/v10.1 folder: from -> to
+- bin/cudnn64_7.dll -> bin
+- include/cudnn.h -> include
+- lib/x64/cudnn.lib -> lib
 
 ## Installation
 First, clone or download this GitHub repository.
