@@ -2,7 +2,7 @@
 
 YOLOv3 and YOLOv4 implementation in TensorFlow 2.x, with support for training, transfer training, object tracking mAP and so on...
 Code was tested with following specs:
-- i7-7700k CPU and Nvidia 1080TI GPU
+- i5-7300HQ- CPU and Nvidia 1050TI GPU
 - OS Ubuntu 18.04
 - CUDA 10.1
 - cuDNN v7.6.5
