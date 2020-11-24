@@ -22,7 +22,7 @@ from deep_sort.detection import Detection
 from deep_sort.tracker import Tracker
 from deep_sort import generate_detections as gdet
 
-video_path   = "./IMAGES/test.mp4"
+video_path   = "./IMAGES/GrupaC1.avi"
 
 def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, CLASSES=YOLO_COCO_CLASSES, score_threshold=0.3, iou_threshold=0.45, rectangle_colors='', Track_only = []):
     # Definition of the parameters
@@ -52,15 +52,19 @@ def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, C
     NUM_CLASS = read_class_names(CLASSES)
     key_list = list(NUM_CLASS.keys()) 
     val_list = list(NUM_CLASS.values())
+    counter = 1
     while True:
+
         _, frame = vid.read()
+
+
 
         try:
             original_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             original_frame = cv2.cvtColor(original_frame, cv2.COLOR_BGR2RGB)
         except:
             break
-        
+
         image_data = image_preprocess(np.copy(original_frame), [input_size, input_size])
         #image_data = tf.expand_dims(image_data, 0)
         image_data = image_data[np.newaxis, ...].astype(np.float32)
@@ -75,11 +79,11 @@ def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, C
             for key, value in result.items():
                 value = value.numpy()
                 pred_bbox.append(value)
-        
+
         #t1 = time.time()
         #pred_bbox = Yolo.predict(image_data)
         t2 = time.time()
-        
+
         pred_bbox = [tf.reshape(x, (-1, tf.shape(x)[-1])) for x in pred_bbox]
         pred_bbox = tf.concat(pred_bbox, axis=0)
 
@@ -95,7 +99,7 @@ def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, C
                 names.append(NUM_CLASS[int(bbox[5])])
 
         # Obtain all the detections for the given frame.
-        boxes = np.array(boxes) 
+        boxes = np.array(boxes)
         names = np.array(names)
         scores = np.array(scores)
         features = np.array(encoder(original_frame, boxes))
@@ -109,7 +113,7 @@ def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, C
         tracked_bboxes = []
         for track in tracker.tracks:
             if not track.is_confirmed() or track.time_since_update > 5:
-                continue 
+                continue
             bbox = track.to_tlbr() # Get the corrected/predicted bounding box
             class_name = track.get_class() #Get the class name of particular object
             tracking_id = track.track_id # Get the ID for the particular track
@@ -122,14 +126,14 @@ def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, C
         t3 = time.time()
         times.append(t2-t1)
         times_2.append(t3-t1)
-        
+
         times = times[-20:]
         times_2 = times_2[-20:]
 
         ms = sum(times)/len(times)*1000
         fps = 1000 / ms
         fps2 = 1000 / (sum(times_2)/len(times_2)*1000)
-        
+
         image = cv2.putText(image, "Time: {:.1f} FPS".format(fps), (0, 30), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 255), 2)
 
         # draw original yolo detection
@@ -139,7 +143,7 @@ def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, C
         if output_path != '': out.write(image)
         if show:
             cv2.imshow('output', image)
-            
+
             if cv2.waitKey(25) & 0xFF == ord("q"):
                 cv2.destroyAllWindows()
                 break
@@ -148,4 +152,4 @@ def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, C
 
 
 yolo = Load_Yolo_model()
-Object_tracking(yolo, video_path, "detection.mp4", input_size=YOLO_INPUT_SIZE, show=True, iou_threshold=0.1, rectangle_colors=(255,0,0), Track_only = ["person"])
+Object_tracking(yolo, video_path, "detection.mp4", input_size=YOLO_INPUT_SIZE, show=True, iou_threshold=0.1, rectangle_colors=(255,0,0), Track_only = ["car", "bus","truck", "bicycle","bike"])
