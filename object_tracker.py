@@ -24,11 +24,25 @@ from deep_sort import generate_detections as gdet
 
 video_path   = "./IMAGES/GrupaC1.avi"
 
+logs = {'car': [],
+        'bus': [],
+        'bicycle': [],
+        'truck': [],
+        'bike': []}
+printable = []
+
+def add_to_logs(id, name, frame):
+    if id not in logs[name]:
+        logs[name].append(id)
+        printable.append(str(name) + str(id) + ": " + str(frame//24) + 's')
+
+
 def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, CLASSES=YOLO_COCO_CLASSES, score_threshold=0.3, iou_threshold=0.45, rectangle_colors='', Track_only = []):
     # Definition of the parameters
     max_cosine_distance = 0.7
     nn_budget = None
-    
+
+
     #initialize deep sort object
     model_filename = 'model_data/mars-small128.pb'
     encoder = gdet.create_box_encoder(model_filename, batch_size=1)
@@ -52,9 +66,9 @@ def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, C
     NUM_CLASS = read_class_names(CLASSES)
     key_list = list(NUM_CLASS.keys()) 
     val_list = list(NUM_CLASS.values())
-    counter = 1
+    counter = 0
     while True:
-
+        counter += 1
         _, frame = vid.read()
 
 
@@ -112,8 +126,10 @@ def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, C
         # Obtain info from the tracks
         tracked_bboxes = []
         for track in tracker.tracks:
+
             if not track.is_confirmed() or track.time_since_update > 5:
                 continue
+            add_to_logs(track.track_id, track.get_class(), counter)
             bbox = track.to_tlbr() # Get the corrected/predicted bounding box
             class_name = track.get_class() #Get the class name of particular object
             tracking_id = track.track_id # Get the ID for the particular track
@@ -151,5 +167,10 @@ def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, C
     cv2.destroyAllWindows()
 
 
+
 yolo = Load_Yolo_model()
-Object_tracking(yolo, video_path, "detection.mp4", input_size=YOLO_INPUT_SIZE, show=True, iou_threshold=0.1, rectangle_colors=(255,0,0), Track_only = ["car", "bus","truck", "bicycle","bike"])
+Object_tracking(yolo, video_path, "detection_test.mp4", input_size=YOLO_INPUT_SIZE, show=True, iou_threshold=0.1, rectangle_colors=(255,0,0), Track_only = ["car", "bus","truck", "bicycle","bike"])
+print(printable)
+print('buses: ', len(logs['bus']))
+print('cars: ', len(logs['car']))
+print('trucks: ', len(logs['truck']))
