@@ -21,8 +21,17 @@ from deep_sort import nn_matching
 from deep_sort.detection import Detection
 from deep_sort.tracker import Tracker
 from deep_sort import generate_detections as gdet
+import sys
+from datetime import datetime
+args = sys.argv
 
-video_path   = "./IMAGES/GrupaC1.avi"
+
+
+video_path = args[1]
+now = datetime.now().strftime("%d_%m_%Y_%H_%M")
+out_video_path = "./OUTPUT/outputVideo" + now + '.mp4'
+logs_path = "./OUTPUT/logs" + now + '.txt'
+
 
 logs = {'car': [],
         'bus': [],
@@ -34,7 +43,7 @@ printable = []
 def add_to_logs(id, name, frame):
     if id not in logs[name]:
         logs[name].append(id)
-        printable.append(str(name) + str(id) + ": " + str(frame//24) + 's')
+        printable.append(str(name) + ": " + str(frame//24) + 's')
 
 
 def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, CLASSES=YOLO_COCO_CLASSES, score_threshold=0.3, iou_threshold=0.45, rectangle_colors='', Track_only = []):
@@ -169,8 +178,13 @@ def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, C
 
 
 yolo = Load_Yolo_model()
-Object_tracking(yolo, video_path, "detection_test.mp4", input_size=YOLO_INPUT_SIZE, show=True, iou_threshold=0.1, rectangle_colors=(255,0,0), Track_only = ["car", "bus","truck", "bicycle","bike"])
-print(printable)
-print('buses: ', len(logs['bus']))
-print('cars: ', len(logs['car']))
-print('trucks: ', len(logs['truck']))
+Object_tracking(yolo, video_path, out_video_path, input_size=YOLO_INPUT_SIZE, show=True, iou_threshold=0.1, rectangle_colors=(255,0,0), Track_only = ["car", "bus","truck", "bicycle","bike"])
+
+with open(logs_path, 'w') as out_logs:
+    out_logs.write("\n".join(printable))
+    out_logs.write('\nbuses: ' + str(len(logs['bus'])))
+    out_logs.write('\ncars: ' + str(len(logs['car'])))
+    out_logs.write('\ntrucks: ' + str(len(logs['truck'])))
+
+
+

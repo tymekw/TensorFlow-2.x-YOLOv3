@@ -1,0 +1,5 @@
+car: 0s
+car: 0s
+buses: 0
+cars: 2
+trucks: 0
