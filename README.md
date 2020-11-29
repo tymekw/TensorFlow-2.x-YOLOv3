@@ -41,6 +41,14 @@ wget -P model_data https://github.com/AlexeyAB/darknet/releases/download/darknet
 wget -P model_data https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v4_pre/yolov4-tiny.weights
 ```
 
+## Running program
+Go to TensorFlow-2.x-YOLOv3 directory
+run from commandline:
+python object_tracker.py path_to_your_video
+
+
+----------------------------------------------------------------------------------------------------------
+
 ## Quick start
 Start with using pretrained weights to test predictions on both image and video:
 ```
