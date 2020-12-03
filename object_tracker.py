@@ -69,7 +69,7 @@ def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, C
     fps = int(vid.get(cv2.CAP_PROP_FPS))
     codec = cv2.VideoWriter_fourcc(*'XVID')
     out = cv2.VideoWriter(output_path, codec, fps, (width, height))  # output_path must be .mp4
-
+    fpsvideo = fps
     NUM_CLASS = read_class_names(CLASSES)
     key_list = list(NUM_CLASS.keys())
     val_list = list(NUM_CLASS.values())
@@ -136,7 +136,7 @@ def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, C
 
             if not track.is_confirmed() or track.time_since_update > 5:
                 continue
-            add_to_logs(track.track_id, track.get_class(), counter, fps)
+            add_to_logs(track.track_id, track.get_class(), counter, fpsvideo)
             bbox = track.to_tlbr()  # Get the corrected/predicted bounding box
             class_name = track.get_class()  # Get the class name of particular object
             tracking_id = track.track_id  # Get
