@@ -14,7 +14,7 @@ os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 import cv2
 import numpy as np
 import tensorflow as tf
-from yolov3.utils import Load_Yolo_model, image_preprocess, postprocess_boxes, nms, draw_bbox, read_class_names
+from yolov3.utils import Load_Yolo_model, image_preprocess, postprocess_boxes, nms, draw_bbox,draw_bboxv2, read_class_names
 from yolov3.configs import *
 import time
 
@@ -146,7 +146,7 @@ def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, C
                                                    index])  # Structure data, that we could use it with our draw_bbox function
 
         # draw detection on frame
-        image = draw_bbox(original_frame, tracked_bboxes, CLASSES=CLASSES, tracking=True)
+        image = draw_bboxv2(original_frame, tracked_bboxes, CLASSES=CLASSES, tracking=True)
 
         t3 = time.time()
         times.append(t2 - t1)
@@ -179,7 +179,7 @@ def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, C
 
 def run(video_path):
     yolo = Load_Yolo_model()
-    Object_tracking(yolo, video_path, out_video_path, input_size=YOLO_INPUT_SIZE, show=False, iou_threshold=0.1,
+    Object_tracking(yolo, video_path, out_video_path, input_size=YOLO_INPUT_SIZE, show=True, iou_threshold=0.1,
                     rectangle_colors=(255, 0, 0), Track_only=["car", "bus", "truck", "bicycle", "motorbike", "train"])
 
     with open(logs_path, 'w') as out_logs:
