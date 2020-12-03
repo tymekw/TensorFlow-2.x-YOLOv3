@@ -43,10 +43,8 @@ wget -P model_data https://github.com/AlexeyAB/darknet/releases/download/darknet
 
 ## Running program
 - Go to TensorFlow-2.x-YOLOv3 directory
-- run from command line:
-- python object_tracker.py path_to_your_video
-- working example:
-- python object_tracker.py ./IMAGES/GrupaC1.avi
+- run GUI from command line:
+- python app.py
 
 ----------------------------------------------------------------------------------------------------------
 
