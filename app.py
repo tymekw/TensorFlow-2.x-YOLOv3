@@ -1,14 +1,21 @@
 import tkinter as tk
 from tkinter import filedialog
 import object_tracker
+import os
 
-file = ''
-movie_path = ''
+input_video = ''
+output_video = ''
 logs_path = ''
+output_video_full_path = ''
+logs_full_path = ''
 
 def run():
-    if file != '' and movie_path != '' and logs_path != '' :
-        object_tracker.run(file, movie_path, logs_path)
+    if input_video != '' and output_video != '' and logs_path != '' :
+        global output_video_full_path
+        global logs_full_path
+        results = object_tracker.run(input_video, output_video, logs_path)
+        logs_full_path = results[0]
+        output_video_full_path = results[1]
 
 def choose_file():
     filename = filedialog.askopenfilename(initialdir='./', title="Select File",
@@ -18,21 +25,26 @@ def choose_file():
                                               ("All Media Files", ".avi")))
     if filename:
         # files.append(filename)
-        global file
-        file = filename
-        label = tk.Label(root, text=file, bg='gray')
+        global input_video
+        input_video = filename
+        label = tk.Label(root, text=input_video, bg='gray')
         label.pack()
         print(filename)
 
 
 def choose_folder_logs():
-    global movie_path
-    movie_path = filedialog.askdirectory()
+    global output_video
+    output_video = filedialog.askdirectory()
 
 
 def choose_folder_video():
     global logs_path
     logs_path = filedialog.askdirectory()
+
+def show_logs():
+    global logs_full_path
+    if logs_full_path != '':
+        os.system("notepad "+logs_full_path)
 
 root = tk.Tk()
 canvas = tk.Canvas(root, height=100, width=100, bg='#263D42')
@@ -53,5 +65,9 @@ open_logs.pack()
 run_app = tk.Button(root, text="Run", padx=10,
                       pady=5, fg='white', bg='#263D42', command=run)
 run_app.pack()
+
+show_logs = tk.Button(root, text="Show Logs", padx=10,
+                      pady=5, fg='white', bg='#263D42', command=show_logs)
+show_logs.pack()
 
 root.mainloop()

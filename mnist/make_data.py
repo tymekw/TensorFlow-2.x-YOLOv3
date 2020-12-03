@@ -77,27 +77,27 @@ def make_image(data, image_path, ratio=1):
     return blank
 
 
-for file in ["train", "test"]:
-    if not os.path.exists(f"mnist/{file}"):
-        with ZipFile(f"mnist/{file}.zip", 'r') as zip:
+for input_video in ["train", "test"]:
+    if not os.path.exists(f"mnist/{input_video}"):
+        with ZipFile(f"mnist/{input_video}.zip", 'r') as zip:
             # extracting all the files 
-            print(f'Extracting all {file} files now...') 
+            print(f'Extracting all {input_video} files now...')
             zip.extractall()
-            shutil.move(file, "mnist")
+            shutil.move(input_video, "mnist")
             print('Done!')
 
-for file in ['train','test']:
-    images_path = os.getcwd()+f"/mnist_{file}"
-    labels_txt = os.getcwd()+f"/mnist_{file}.txt"
+for input_video in ['train', 'test']:
+    images_path = os.getcwd()+f"/mnist_{input_video}"
+    labels_txt = os.getcwd()+f"/mnist_{input_video}.txt"
     
-    if file == 'train': images_num = images_num_train
-    if file == 'test': images_num = images_num_test
+    if input_video == 'train': images_num = images_num_train
+    if input_video == 'test': images_num = images_num_test
         
     if os.path.exists(images_path): shutil.rmtree(images_path)
     os.mkdir(images_path)
 
-    image_paths  = [os.path.join(os.path.realpath("."), os.getcwd()+f"/mnist/{file}/" + image_name)
-                           for image_name in os.listdir(os.getcwd()+f"/mnist/{file}")]
+    image_paths  = [os.path.join(os.path.realpath("."), os.getcwd() +f"/mnist/{input_video}/" + image_name)
+                    for image_name in os.listdir(os.getcwd() +f"/mnist/{input_video}")]
     
     with open(labels_txt, "w") as wf:
         image_num = 0

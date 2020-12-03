@@ -190,3 +190,6 @@ def run(video_path, out_video_path, logs_path):
         out_logs.write('\ntrucks/buses: ' + str(len(objects_to_log['truck']) + len(objects_to_log['bus'])))
         out_logs.write('\nmotorbikes/bicycles: ' + str(len(objects_to_log['motorbike']) + len(objects_to_log['bicycle'])))
         out_logs.write('\nunknown: ' + str(len(objects_to_log['train'])))
+
+    return [logs_full_path, video_full_path]
+
