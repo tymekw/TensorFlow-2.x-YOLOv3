@@ -50,22 +50,9 @@ def show_logs():
 
 def play_video():
     global output_video_full_path
-    if output_video_full_path == '':
-        return
-    else:
-        cap = cv2.VideoCapture(output_video_full_path)
-        if (cap.isOpened() == False):
-            print("Error opening video  file")
-        while (cap.isOpened()):
-            ret, frame = cap.read()
-            if ret == True:
-                cv2.imshow('Frame', frame)
-                if cv2.waitKey(25) & 0xFF == ord('q'):
-                    break
-            else:
-                break
-        cap.release()
-        cv2.destroyAllWindows()
+    if output_video_full_path != '':
+        os.system("vlc " + output_video_full_path)
+
 
 root = tk.Tk()
 canvas = tk.Canvas(root, height=100, width=100, bg='#263D42')
