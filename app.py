@@ -60,7 +60,7 @@ def play_video():
             ret, frame = cap.read()
             if ret == True:
                 cv2.imshow('Frame', frame)
-                if cv2.waitKey(25) & 0xFF == ord('q'):
+                if cv2.waitKey(15) & 0xFF == ord('q'):
                     break
             else:
                 break
