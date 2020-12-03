@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import filedialog
 import object_tracker
 import os
+import numpy as np
+import cv2
 
 input_video = ''
 output_video = ''
@@ -46,6 +48,25 @@ def show_logs():
     if logs_full_path != '':
         os.system("notepad "+logs_full_path)
 
+def play_video():
+    global output_video_full_path
+    if output_video_full_path == '':
+        return
+    else:
+        cap = cv2.VideoCapture(output_video_full_path)
+        if (cap.isOpened() == False):
+            print("Error opening video  file")
+        while (cap.isOpened()):
+            ret, frame = cap.read()
+            if ret == True:
+                cv2.imshow('Frame', frame)
+                if cv2.waitKey(25) & 0xFF == ord('q'):
+                    break
+            else:
+                break
+        cap.release()
+        cv2.destroyAllWindows()
+
 root = tk.Tk()
 canvas = tk.Canvas(root, height=100, width=100, bg='#263D42')
 canvas.pack()
@@ -69,5 +90,9 @@ run_app.pack()
 show_logs = tk.Button(root, text="Show Logs", padx=10,
                       pady=5, fg='white', bg='#263D42', command=show_logs)
 show_logs.pack()
+
+show_output_video = tk.Button(root, text="Show Video", padx=10,
+                      pady=5, fg='white', bg='#263D42', command=play_video)
+show_output_video.pack()
 
 root.mainloop()
