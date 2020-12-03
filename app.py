@@ -15,10 +15,12 @@ def choose_file():
                                               ("All Media Files", ".mp4"),
                                               ("All Media Files", ".flv"),
                                               ("All Media Files", ".avi")))
-    files.append(filename)
-    label = tk.Label(root, text=files[0], bg='gray')
-    label.pack()
-    print(filename)
+    if filename:
+        files.append(filename)
+        label = tk.Label(root, text=files[0], bg='gray')
+        label.pack()
+        print(filename)
+
 
 root = tk.Tk()
 canvas = tk.Canvas(root, height=100, width=100, bg='#263D42')
