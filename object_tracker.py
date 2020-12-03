@@ -181,7 +181,7 @@ def run(video_path, out_video_path, logs_path):
     logs_full_path = logs_path + logs_name
     video_full_path = out_video_path + out_video_name
     yolo = Load_Yolo_model()
-    Object_tracking(yolo, video_path, video_full_path, input_size=YOLO_INPUT_SIZE, show=True, iou_threshold=0.1,
+    Object_tracking(yolo, video_path, video_full_path, input_size=YOLO_INPUT_SIZE, show=False, iou_threshold=0.1,
                     rectangle_colors=(255, 0, 0), Track_only=["car", "bus", "truck", "bicycle", "motorbike", "train"])
 
     with open(logs_full_path, 'w') as out_logs:

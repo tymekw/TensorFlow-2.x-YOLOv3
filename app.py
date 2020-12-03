@@ -11,13 +11,15 @@ logs_path = ''
 output_video_full_path = ''
 logs_full_path = ''
 
+
 def run():
-    if input_video != '' and output_video != '' and logs_path != '' :
+    if input_video != '' and output_video != '' and logs_path != '':
         global output_video_full_path
         global logs_full_path
         results = object_tracker.run(input_video, output_video, logs_path)
         logs_full_path = results[0]
         output_video_full_path = results[1]
+
 
 def choose_file():
     filename = filedialog.askopenfilename(initialdir='./', title="Select File",
@@ -43,15 +45,18 @@ def choose_folder_video():
     global logs_path
     logs_path = filedialog.askdirectory()
 
+
 def show_logs():
     global logs_full_path
     if logs_full_path != '':
-        os.system("notepad "+logs_full_path)
+        os.system("notepad " + logs_full_path)
+
 
 def play_video():
     global output_video_full_path
     if output_video_full_path != '':
-        os.system("vlc " + output_video_full_path)
+        replaced_path = output_video_full_path.replace("/", "\\")
+        os.system("vlc " + replaced_path)
 
 
 root = tk.Tk()
@@ -63,7 +68,7 @@ open_file = tk.Button(root, text="Choose File", padx=10,
 open_file.pack()
 
 open_movie = tk.Button(root, text="Choose movie directory", padx=10,
-                      pady=5, fg='white', bg='#263D42', command=choose_folder_video)
+                       pady=5, fg='white', bg='#263D42', command=choose_folder_video)
 open_movie.pack()
 
 open_logs = tk.Button(root, text="Choose logs directory", padx=10,
@@ -71,7 +76,7 @@ open_logs = tk.Button(root, text="Choose logs directory", padx=10,
 open_logs.pack()
 
 run_app = tk.Button(root, text="Run", padx=10,
-                      pady=5, fg='white', bg='#263D42', command=run)
+                    pady=5, fg='white', bg='#263D42', command=run)
 run_app.pack()
 
 show_logs = tk.Button(root, text="Show Logs", padx=10,
@@ -79,7 +84,7 @@ show_logs = tk.Button(root, text="Show Logs", padx=10,
 show_logs.pack()
 
 show_output_video = tk.Button(root, text="Show Video", padx=10,
-                      pady=5, fg='white', bg='#263D42', command=play_video)
+                              pady=5, fg='white', bg='#263D42', command=play_video)
 show_output_video.pack()
 
 root.mainloop()
