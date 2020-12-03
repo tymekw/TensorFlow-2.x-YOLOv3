@@ -60,31 +60,40 @@ def play_video():
 
 
 root = tk.Tk()
-canvas = tk.Canvas(root, height=100, width=100, bg='#263D42')
-canvas.pack()
+root.resizable(False, False)
+# canvas = tk.Canvas(root, height=100, width=100, bg='#263D42')
+# canvas.pack()
+BUTTON_HEIGHT = 2
+BUTTON_WIDTH = 19
 
 open_file = tk.Button(root, text="Choose File", padx=10,
                       pady=5, fg='white', bg='#263D42', command=choose_file)
+open_file.config(height=BUTTON_HEIGHT, width=BUTTON_WIDTH)
 open_file.pack()
 
 open_movie = tk.Button(root, text="Choose movie directory", padx=10,
                        pady=5, fg='white', bg='#263D42', command=choose_folder_video)
+open_movie.config(height=BUTTON_HEIGHT, width=BUTTON_WIDTH)
 open_movie.pack()
 
 open_logs = tk.Button(root, text="Choose logs directory", padx=10,
                       pady=5, fg='white', bg='#263D42', command=choose_folder_logs)
+open_logs.config(height=BUTTON_HEIGHT, width=BUTTON_WIDTH)
 open_logs.pack()
 
 run_app = tk.Button(root, text="Run", padx=10,
                     pady=5, fg='white', bg='#263D42', command=run)
+run_app.config(height=BUTTON_HEIGHT, width=BUTTON_WIDTH)
 run_app.pack()
 
 show_logs = tk.Button(root, text="Show Logs", padx=10,
                       pady=5, fg='white', bg='#263D42', command=show_logs)
+show_logs.config(height=BUTTON_HEIGHT, width=BUTTON_WIDTH)
 show_logs.pack()
 
 show_output_video = tk.Button(root, text="Show Video", padx=10,
                               pady=5, fg='white', bg='#263D42', command=play_video)
+show_output_video.config(height=BUTTON_HEIGHT, width=BUTTON_WIDTH)
 show_output_video.pack()
 
 root.mainloop()
