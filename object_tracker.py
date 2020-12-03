@@ -29,7 +29,7 @@ now = datetime.now().strftime("%d_%m_%Y_%H_%M")
 out_video_path = "./OUTPUT/outputVideo" + now + '.mp4'
 logs_path = "./OUTPUT/logs" + now + '.txt'
 
-logs = {'car': [],
+objects_to_log = {'car': [],
         'bus': [],
         'bicycle': [],
         'truck': [],
@@ -39,8 +39,8 @@ printable = []
 
 
 def add_to_logs(id, name, frame, fps):
-    if id not in logs[name]:
-        logs[name].append(id)
+    if id not in objects_to_log[name]:
+        objects_to_log[name].append(id)
         printable.append(str(name) + ": " + str(frame // fps) + 's')
 
 
@@ -179,11 +179,12 @@ def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, C
 
 def run(video_path):
     yolo = Load_Yolo_model()
-    Object_tracking(yolo, video_path, out_video_path, input_size=YOLO_INPUT_SIZE, show=True, iou_threshold=0.1,
+    Object_tracking(yolo, video_path, out_video_path, input_size=YOLO_INPUT_SIZE, show=False, iou_threshold=0.1,
                     rectangle_colors=(255, 0, 0), Track_only=["car", "bus", "truck", "bicycle", "motorbike", "train"])
+
     with open(logs_path, 'w') as out_logs:
         out_logs.write("\n".join(printable))
-        out_logs.write('\ncars: ' + str(len(logs['car'])))
-        out_logs.write('\ntrucks/buses: ' + str(len(logs['truck'])+len(logs['bus'])))
-        out_logs.write('\nmotorbikes/bicycles: ' + str(len(logs['motorbike']) + len(logs['bicycle'])))
-        out_logs.write('\nunknown: '+ str(len(logs['train'])))
+        out_logs.write('\ncars: ' + str(len(objects_to_log['car'])))
+        out_logs.write('\ntrucks/buses: ' + str(len(objects_to_log['truck']) + len(objects_to_log['bus'])))
+        out_logs.write('\nmotorbikes/bicycles: ' + str(len(objects_to_log['motorbike']) + len(objects_to_log['bicycle'])))
+        out_logs.write('\nunknown: ' + str(len(objects_to_log['train'])))
