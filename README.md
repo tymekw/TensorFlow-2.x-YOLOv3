@@ -8,7 +8,7 @@ Code was tested with following specs:
 - cuDNN v7.6.5
 - TensorRT-6.0.1.5
 - Tensorflow-GPU 2.3.1
-- Code was tested on Ubuntu and Windows 10 (TensorRT not supported officially)
+- Code was tested on Windows 10 (TensorRT not supported officially)
 ## GPU compatibility on Windows 10
 - check if your GPU is compatible
 - install GPU driver
@@ -31,17 +31,13 @@ pip install -r ./requirements.txt
 # yolov3
 wget -P model_data https://pjreddie.com/media/files/yolov3.weights
 
-# yolov3-tiny
-wget -P model_data https://pjreddie.com/media/files/yolov3-tiny.weights
-
-# yolov4
-wget -P model_data https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v3_optimal/yolov4.weights
-
-# yolov4-tiny
-wget -P model_data https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v4_pre/yolov4-tiny.weights
-```
+Download VLC Media Player and add its directory to environmental variable PATH
+https://www.videolan.org/vlc/index.pl.html
 
 ## Run program
 - Go to TensorFlow-2.x-YOLOv3 directory
 - run GUI from command line:
 - python app.py
+``` 
+
+##Enjoy :)
