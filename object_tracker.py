@@ -26,8 +26,8 @@ from datetime import datetime
 
 
 now = datetime.now().strftime("%d_%m_%Y_%H_%M")
-out_video_path = "./OUTPUT/outputVideo" + now + '.mp4'
-logs_path = "./OUTPUT/logs" + now + '.txt'
+out_video_name = "/outputVideo" + now + '.mp4'
+logs_name = "/logs" + now + '.txt'
 
 objects_to_log = {'car': [],
         'bus': [],
@@ -177,12 +177,14 @@ def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, C
     cv2.destroyAllWindows()
 
 
-def run(video_path):
+def run(video_path, out_video_path, logs_path):
+    logs_full_path = logs_path + logs_name
+    video_full_path = out_video_path + out_video_name
     yolo = Load_Yolo_model()
-    Object_tracking(yolo, video_path, out_video_path, input_size=YOLO_INPUT_SIZE, show=True, iou_threshold=0.1,
+    Object_tracking(yolo, video_path, video_full_path, input_size=YOLO_INPUT_SIZE, show=True, iou_threshold=0.1,
                     rectangle_colors=(255, 0, 0), Track_only=["car", "bus", "truck", "bicycle", "motorbike", "train"])
 
-    with open(logs_path, 'w') as out_logs:
+    with open(logs_full_path, 'w') as out_logs:
         out_logs.write("\n".join(printable))
         out_logs.write('\ncars: ' + str(len(objects_to_log['car'])))
         out_logs.write('\ntrucks/buses: ' + str(len(objects_to_log['truck']) + len(objects_to_log['bus'])))
