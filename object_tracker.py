@@ -22,13 +22,9 @@ from deep_sort import nn_matching
 from deep_sort.detection import Detection
 from deep_sort.tracker import Tracker
 from deep_sort import generate_detections as gdet
-import sys
 from datetime import datetime
 
-# args = sys.argv
 
-
-# video_path = args[1]
 now = datetime.now().strftime("%d_%m_%Y_%H_%M")
 out_video_path = "./OUTPUT/outputVideo" + now + '.mp4'
 logs_path = "./OUTPUT/logs" + now + '.txt'
@@ -37,14 +33,15 @@ logs = {'car': [],
         'bus': [],
         'bicycle': [],
         'truck': [],
-        'bike': []}
+        'motorbike': [],
+        'train': []}
 printable = []
 
 
-def add_to_logs(id, name, frame):
+def add_to_logs(id, name, frame, fps):
     if id not in logs[name]:
         logs[name].append(id)
-        printable.append(str(name) + ": " + str(frame // 24) + 's')
+        printable.append(str(name) + ": " + str(frame // fps) + 's')
 
 
 def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, CLASSES=YOLO_COCO_CLASSES,
@@ -139,10 +136,11 @@ def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, C
 
             if not track.is_confirmed() or track.time_since_update > 5:
                 continue
-            add_to_logs(track.track_id, track.get_class(), counter)
+            add_to_logs(track.track_id, track.get_class(), counter, fps)
             bbox = track.to_tlbr()  # Get the corrected/predicted bounding box
             class_name = track.get_class()  # Get the class name of particular object
-            tracking_id = track.track_id  # Get the ID for the particular track
+            tracking_id = track.track_id  # Get
+            # the ID for the particular track
             index = key_list[val_list.index(class_name)]  # Get predicted object index by object name
             tracked_bboxes.append(bbox.tolist() + [tracking_id,
                                                    index])  # Structure data, that we could use it with our draw_bbox function
@@ -182,9 +180,10 @@ def Object_tracking(Yolo, video_path, output_path, input_size=416, show=False, C
 def run(video_path):
     yolo = Load_Yolo_model()
     Object_tracking(yolo, video_path, out_video_path, input_size=YOLO_INPUT_SIZE, show=True, iou_threshold=0.1,
-                    rectangle_colors=(255, 0, 0), Track_only=["car", "bus", "truck", "bicycle", "bike"])
+                    rectangle_colors=(255, 0, 0), Track_only=["car", "bus", "truck", "bicycle", "motorbike", "train"])
     with open(logs_path, 'w') as out_logs:
         out_logs.write("\n".join(printable))
-        out_logs.write('\nbuses: ' + str(len(logs['bus'])))
         out_logs.write('\ncars: ' + str(len(logs['car'])))
-        out_logs.write('\ntrucks: ' + str(len(logs['truck'])))
+        out_logs.write('\ntrucks/buses: ' + str(len(logs['truck'])+len(logs['bus'])))
+        out_logs.write('\nmotorbikes/bicycles: ' + str(len(logs['motorbike']) + len(logs['bicycle'])))
+        out_logs.write('\nunknown: '+ str(len(logs['train'])))
