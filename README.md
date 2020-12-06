@@ -34,10 +34,11 @@ wget -P model_data https://pjreddie.com/media/files/yolov3.weights
 Download VLC Media Player and add its directory to environmental variable PATH
 https://www.videolan.org/vlc/index.pl.html
 
+``` 
 ## Run program
 - Go to TensorFlow-2.x-YOLOv3 directory
 - run GUI from command line:
 - python app.py
-``` 
 
-##Enjoy :)
+
+## Enjoy :)
