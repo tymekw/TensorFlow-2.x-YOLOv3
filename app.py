@@ -2,8 +2,7 @@ import tkinter as tk
 from tkinter import filedialog
 import object_tracker
 import os
-import numpy as np
-import cv2
+
 
 input_video = ''
 output_video = ''
@@ -19,6 +18,12 @@ def run():
         results = object_tracker.run(input_video, output_video, logs_path)
         logs_full_path = results[0]
         output_video_full_path = results[1]
+        if results:
+            show_output_video.config(bg='green')
+            show_logs.config(bg='green')
+        else:
+            show_output_video.config(bg='red')
+            show_logs.config(bg='red')
 
 
 def choose_file():
@@ -28,6 +33,7 @@ def choose_file():
                                               ("All Media Files", ".flv"),
                                               ("All Media Files", ".avi")))
     if filename:
+        open_file.config(bg='green')
         # files.append(filename)
         global input_video
         input_video = filename
@@ -37,26 +43,37 @@ def choose_file():
 
 
 def choose_folder_logs():
-    global output_video
-    output_video = filedialog.askdirectory()
+    global logs_path
+    logs_path = filedialog.askdirectory()
+    if logs_path:
+        open_logs.config(bg='green')
+    else:
+        open_logs.config(bg='red')
 
 
 def choose_folder_video():
-    global logs_path
-    logs_path = filedialog.askdirectory()
-
+    global output_video
+    output_video = filedialog.askdirectory()
+    if output_video:
+        open_movie.config(bg='green')
+    else:
+        open_movie.config(bg='red')
 
 def show_logs():
+    show_output_video.config(bg='red')
     global logs_full_path
     if logs_full_path != '':
         os.system("notepad " + logs_full_path)
+        show_output_video.config(bg='green')
 
 
 def play_video():
+    show_logs.config(bg='red')
     global output_video_full_path
     if output_video_full_path != '':
         replaced_path = output_video_full_path.replace("/", "\\")
         os.system("vlc " + replaced_path)
+        show_logs.config(bg='green')
 
 
 root = tk.Tk()
